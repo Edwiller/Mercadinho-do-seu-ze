@@ -1,21 +1,42 @@
 <?php
 
-$host = '127.0.0.1';
-$porta = '3306';
-$banco = 'mercadinho_seu_ze';
-$usuario = 'root';
-$senha = 'admin';
+class Conexao
+{
+    private static function carregarEnv(): array
+    {
+        $arquivoEnv = dirname(__DIR__, 2) . '/.env';
 
-try {
-    $pdo = new PDO(
-        "mysql:host=$host;port=$porta;dbname=$banco;charset=utf8mb4",
-        $usuario,
-        $senha
-    );
+        if (!file_exists($arquivoEnv)) {
+            throw new Exception('Arquivo .env não encontrado.');
+        }
 
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $variaveis = [];
+        $linhas = file($arquivoEnv, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-} catch (PDOException $e) {
-    die('Erro na conexão com o banco: ' . $e->getMessage());
+        foreach ($linhas as $linha) {
+            $linha = trim($linha);
+
+            if ($linha === '' || str_starts_with($linha, '#')) {
+                continue;
+            }
+
+            [$chave, $valor] = array_pad(explode('=', $linha, 2), 2, '');
+            $variaveis[trim($chave)] = trim($valor);
+        }
+
+        return $variaveis;
+    }
+
+    public static function criar(): PDO
+    {
+        $env = self::carregarEnv();
+
+        $dsn = "mysql:host={$env['DB_HOST']};port={$env['DB_PORT']};"
+             . "dbname={$env['DB_NAME']};charset=utf8mb4";
+
+        return new PDO($dsn, $env['DB_USER'], $env['DB_PASSWORD'], [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+    }
 }
