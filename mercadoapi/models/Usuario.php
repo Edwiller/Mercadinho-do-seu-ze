@@ -10,24 +10,73 @@ class Usuario
     private $ativo = true;
     private $criadoEm;
 
-    public function getId() { return $this->id; }
-    public function setId($id) { $this->id = $id; }
+    public function getId()
+    {
+        return $this->id;
+    }
 
-    public function getNome() { return $this->nome; }
-    public function setNome($nome) { $this->nome = $nome; }
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
-    public function getEmail() { return $this->email; }
-    public function setEmail($email) { $this->email = $email; }
+    public function getNome()
+    {
+        return $this->nome;
+    }
 
-    public function getSenha() { return $this->senha; }
-    public function setSenha($senha) { $this->senha = $senha; }
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+    }
 
-    public function getPerfil() { return $this->perfil; }
-    public function setPerfil($perfil) { $this->perfil = $perfil; }
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-    public function getAtivo() { return $this->ativo; }
-    public function setAtivo($ativo) { $this->ativo = $ativo; }
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-    public function getCriadoEm() { return $this->criadoEm; }
-    public function setCriadoEm($criadoEm) { $this->criadoEm = $criadoEm; }
+    public function getSenha()
+    {
+        return $this->senha;
+    }
+
+    public function setSenha($senha)
+    {
+        $this->senha = $senha;
+    }
+
+    public function getPerfil()
+    {
+        return $this->perfil;
+    }
+
+    public function setPerfil($perfil)
+    {
+        $this->perfil = $perfil;
+    }
+
+    public function getAtivo()
+    {
+        return $this->ativo;
+    }
+
+    public function setAtivo($ativo)
+    {
+        $this->ativo = $ativo;
+    }
+
+    public function getCriadoEm()
+    {
+        return $this->criadoEm;
+    }
+
+    public function setCriadoEm($criadoEm)
+    {
+        $this->criadoEm = $criadoEm;
+    }
 }

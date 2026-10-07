@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard - Mercadinho Seu Zé</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script
+        src="js/home.js"
+        defer>
+    </script>
+</head>
+
+<body>
+
+    <main class="container-home">
+
+        <header class="cabecalho-home">
+
+            <div>
+                <h1 id="titulo">
+                    Carregando...
+                </h1>
+
+                <p class="subtitulo">
+                    Sistema de gerenciamento do Mercadinho Seu Zé.
+                </p>
+            </div>
+
+            <button
+                id="sair"
+                type="button">
+                Encerrar sessão
+            </button>
+
+        </header>
+
+        <section id="area-usuario">
+
+            <h2>Produtos</h2>
+
+            <p>
+                A interface de gerenciamento de produtos e vendas
+                será disponibilizada nesta área.
+            </p>
+
+        </section>
+
+        <section
+            id="area-admin"
+            class="escondido">
+
+            <h2>Gerenciamento de usuários</h2>
+
+            <p class="subtitulo">
+                Área exclusiva para usuários com privilégios administrativos.
+            </p>
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Perfil</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabela"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

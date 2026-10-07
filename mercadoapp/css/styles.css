@@ -1,0 +1,347 @@
+:root {
+    --primaria: #2563eb;
+    --primaria-hover: #1d4ed8;
+
+    --fundo: #f3f4f6;
+    --texto: #1f2937;
+    --texto-secundario: #6b7280;
+
+    --card: #ffffff;
+    --borda: #e5e7eb;
+
+    --sucesso: #15803d;
+    --erro: #dc2626;
+    --erro-hover: #b91c1c;
+    --alerta: #d97706;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        'Segoe UI',
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
+}
+
+body {
+    min-height: 100vh;
+
+    background-color: var(--fundo);
+    color: var(--texto);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2rem;
+}
+
+h1,
+h2 {
+    color: var(--texto);
+    margin-bottom: 0.75rem;
+}
+
+h1 {
+    font-size: 1.6rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+}
+
+.subtitulo {
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* =========================================================
+   AUTENTICAÇÃO
+   ========================================================= */
+
+.container-auth {
+    width: 100%;
+    max-width: 420px;
+
+    background: var(--card);
+
+    padding: 2.5rem;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.container-auth form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.container-auth label {
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    margin-top: 0.5rem;
+}
+
+input {
+    width: 100%;
+
+    padding: 0.8rem;
+
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+
+    font-size: 1rem;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primaria);
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+
+    padding: 0.8rem 1rem;
+
+    background-color: var(--primaria);
+    color: white;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s,
+        transform 0.1s;
+
+    margin-top: 1rem;
+}
+
+button:hover {
+    background-color: var(--primaria-hover);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.container-auth a {
+    display: block;
+
+    text-align: center;
+
+    margin-top: 1.25rem;
+
+    color: var(--primaria);
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+}
+
+.container-auth a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   MENSAGENS
+   ========================================================= */
+
+.mensagem {
+    min-height: 20px;
+
+    margin-top: 1rem;
+
+    text-align: center;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.mensagem-erro {
+    color: var(--erro);
+}
+
+.mensagem-sucesso {
+    color: var(--sucesso);
+}
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+.container-home {
+    width: 100%;
+    max-width: 1100px;
+
+    background: var(--card);
+
+    padding: 2rem;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cabecalho-home {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 2rem;
+
+    margin-bottom: 2rem;
+
+    padding-bottom: 1.25rem;
+
+    border-bottom: 1px solid var(--borda);
+}
+
+#sair {
+    background-color: var(--erro);
+
+    margin: 0;
+
+    white-space: nowrap;
+}
+
+#sair:hover {
+    background-color: var(--erro-hover);
+}
+
+/* =========================================================
+   TABELA
+   ========================================================= */
+
+.tabela-container {
+    overflow-x: auto;
+
+    margin-top: 1.5rem;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 0.9rem;
+}
+
+th,
+td {
+    padding: 0.8rem;
+
+    text-align: left;
+
+    border-bottom: 1px solid var(--borda);
+}
+
+th {
+    background-color: var(--fundo);
+
+    font-weight: 600;
+}
+
+tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.status-ativo {
+    color: var(--sucesso);
+
+    font-weight: 600;
+}
+
+.status-inativo {
+    color: var(--erro);
+
+    font-weight: 600;
+}
+
+/* =========================================================
+   BOTÕES DA TABELA
+   ========================================================= */
+
+.btn-acao {
+    border: none;
+
+    padding: 0.45rem 0.7rem;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    color: white;
+
+    margin: 0 0.2rem;
+
+    font-size: 0.8rem;
+}
+
+.btn-editar {
+    background-color: var(--alerta);
+}
+
+.btn-editar:hover {
+    background-color: #b45309;
+}
+
+.btn-excluir {
+    background-color: var(--erro);
+}
+
+.btn-excluir:hover {
+    background-color: var(--erro-hover);
+}
+
+/* =========================================================
+   UTILITÁRIOS
+   ========================================================= */
+
+.escondido {
+    display: none !important;
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 1rem;
+    }
+
+    .container-auth,
+    .container-home {
+        padding: 1.5rem;
+    }
+
+    .cabecalho-home {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #sair {
+        width: 100%;
+    }
+
+}

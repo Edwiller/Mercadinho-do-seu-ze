@@ -1,33 +1,38 @@
 <?php
 
-require_once dirname(__DIR__) . '/dtos/UsuarioDTO.php';
-require_once dirname(__DIR__) . '/models/Usuario.php';
 require_once dirname(__DIR__) . '/services/UsuarioService.php';
+require_once dirname(__DIR__) . '/dtos/UsuarioDTO.php';
 
-class UsuarioController {
+class UsuarioController
+{
+    private UsuarioService $service;
 
-    public function salvar($usuarioDTO) {
-        // converter DTO para modelo
-        $usuario = new Usuario();
-        $usuario->setNome($usuarioDTO->nome);
-        $usuario->setEmail($usuarioDTO->email);
-        $usuario->setSenha($usuarioDTO->senha);
-
-        $usuarioService = new UsuarioService();
-        $usuarioService->salvar($usuario);
+    public function __construct()
+    {
+        $this->service = new UsuarioService();
     }
 
-    public function autenticar($usuarioDTO) {
-        $usuario = new Usuario();
-        $usuario->setEmail($usuarioDTO->email);
-        $usuario->setSenha($usuarioDTO->senha);
-
-        $usuarioService = new UsuarioService();
-        return $usuarioService->autenticar($usuario);
+    public function salvar(UsuarioDTO $usuario): void
+    {
+        $this->service->salvar($usuario);
     }
 
-    public function listar() {
-        $usuarioService = new UsuarioService();
-        return $usuarioService->listar();
+    public function autenticar(UsuarioDTO $usuario): UsuarioDTO
+    {
+        return $this->service->autenticar($usuario);
+    }
+
+    public function listar(): array
+    {
+        return $this->service->listar();
+    }
+
+    public function excluir(int $id): void
+    {
+        $this->service->excluir($id);
+    }
+    public function editar(UsuarioDTO $usuario): void
+    {
+        $this->service->editar($usuario);
     }
 }
