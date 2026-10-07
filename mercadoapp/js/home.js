@@ -1,8 +1,6 @@
 const API = 'http://localhost:8000/usuarios.php';
 
-/**
- * Função padrão para comunicação com a API.
- */
+
 async function chamar(acao, opcoes = {}) {
     return fetch(`${API}?acao=${acao}`, {
         credentials: 'include',
@@ -11,13 +9,7 @@ async function chamar(acao, opcoes = {}) {
 }
 
 
-/**
- * Inicializa o painel.
- *
- * Verifica se existe uma sessão válida e,
- * caso o usuário seja ADMIN, libera a área
- * de gerenciamento de usuários.
- */
+
 async function iniciar() {
 
     try {
@@ -44,10 +36,6 @@ async function iniciar() {
             titulo.textContent = `Bem-vindo, ${usuario.nome}!`;
         }
 
-        /*
-         * Somente ADMIN pode visualizar
-         * o gerenciamento de usuários.
-         */
         if (usuario.perfil === 'ADMIN') {
 
             const areaAdmin =
@@ -72,12 +60,6 @@ async function iniciar() {
 }
 
 
-/**
- * Carrega todos os usuários cadastrados.
- *
- * A própria API também verifica se o usuário
- * possui perfil ADMIN.
- */
 async function carregarTabela() {
 
     try {
@@ -105,9 +87,7 @@ async function carregarTabela() {
 
         tabela.innerHTML = '';
 
-        /*
-         * Nenhum usuário encontrado.
-         */
+       
         if (
             !dados.dados ||
             dados.dados.length === 0
@@ -125,9 +105,6 @@ async function carregarTabela() {
         }
 
 
-        /*
-         * Percorre todos os usuários.
-         */
         dados.dados.forEach((usuario) => {
 
             const ativo =
@@ -142,12 +119,7 @@ async function carregarTabela() {
                 : 'Inativo';
 
 
-            /*
-             * Usuários ativos podem ser editados
-             * ou desativados.
-             *
-             * Usuários inativos não possuem ações.
-             */
+          
             const acoes = ativo
 
                 ? `
@@ -224,9 +196,6 @@ async function carregarTabela() {
 }
 
 
-/**
- * Redireciona o ADMIN para a tela de edição.
- */
 function editarUsuario(id) {
 
     if (!id) {
@@ -243,12 +212,7 @@ function editarUsuario(id) {
 }
 
 
-/**
- * Desativa um usuário.
- *
- * O registro não é removido do banco.
- * Apenas o campo "ativo" passa para 0.
- */
+
 async function excluirUsuario(id) {
 
     if (!id) {
@@ -299,10 +263,6 @@ async function excluirUsuario(id) {
         );
 
 
-        /*
-         * Atualiza a tabela sem precisar
-         * recarregar toda a página.
-         */
         await carregarTabela();
 
     } catch (erro) {
@@ -319,19 +279,13 @@ async function excluirUsuario(id) {
 }
 
 
-/**
- * Encerra a sessão atual.
- */
 async function sair() {
 
     try {
 
         const resposta = await chamar('sair');
 
-        /*
-         * Mesmo que a API apresente algum erro,
-         * o usuário deve ser levado para o login.
-         */
+       
         if (!resposta.ok) {
 
             console.warn(
@@ -353,9 +307,7 @@ async function sair() {
 }
 
 
-/**
- * Botão de logout.
- */
+
 const botaoSair =
     document.getElementById('sair');
 
@@ -368,15 +320,10 @@ if (botaoSair) {
 }
 
 
-/**
- * Torna as funções disponíveis para os
- * botões criados dinamicamente pela tabela.
- */
+
 window.editarUsuario = editarUsuario;
 window.excluirUsuario = excluirUsuario;
 
 
-/**
- * Inicia o painel.
- */
+
 iniciar();

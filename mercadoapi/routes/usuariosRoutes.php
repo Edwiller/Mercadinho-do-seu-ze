@@ -41,11 +41,7 @@ try {
 
     switch ($acao) {
 
-        /*
-        |--------------------------------------------------------------------------
-        | CADASTRAR USUÁRIO
-        |--------------------------------------------------------------------------
-        */
+       
         case 'salvar':
 
             $usuarioDTO = new UsuarioDTO();
@@ -66,11 +62,7 @@ try {
             break;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | LOGIN
-        |--------------------------------------------------------------------------
-        */
+       
         case 'autenticar':
 
             $usuarioDTO = new UsuarioDTO();
@@ -117,11 +109,7 @@ try {
             break;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | VERIFICAR SESSÃO
-        |--------------------------------------------------------------------------
-        */
+     
         case 'sessao':
 
             if (!isset($_SESSION['usuario'])) {
@@ -140,11 +128,6 @@ try {
             break;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | LISTAR USUÁRIOS
-        |--------------------------------------------------------------------------
-        */
         case 'listar':
 
             if (!isset($_SESSION['usuario'])) {
@@ -173,11 +156,7 @@ try {
             break;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | INATIVAR USUÁRIO
-        |--------------------------------------------------------------------------
-        */
+     
         case 'excluir':
 
             if (!isset($_SESSION['usuario'])) {
@@ -229,69 +208,8 @@ try {
 
             break;
 
-        case 'editar':
 
-            if (!isset($_SESSION['usuario'])) {
-
-                responder([
-                    'sucesso' => false,
-                    'erro' => 'Acesso não autenticado. Efetue o login para continuar.'
-                ], 401);
-            }
-
-            if ($_SESSION['usuario']['perfil'] !== 'ADMIN') {
-
-                responder([
-                    'sucesso' => false,
-                    'erro' => 'Acesso negado. Esta operação requer privilégios administrativos.'
-                ], 403);
-            }
-
-            $id = filter_var(
-                $corpo['id'] ?? null,
-                FILTER_VALIDATE_INT
-            );
-
-            if ($id === false || $id === null || $id <= 0) {
-
-                responder([
-                    'sucesso' => false,
-                    'erro' => 'O identificador do usuário informado é inválido.'
-                ], 400);
-            }
-
-            /*
-             * Impede alteração do próprio perfil por esta operação.
-             */
-            if ($id === (int) $_SESSION['usuario']['id']) {
-
-                responder([
-                    'sucesso' => false,
-                    'erro' => 'A alteração do próprio usuário não está disponível nesta operação.'
-                ], 400);
-            }
-
-            $usuarioDTO = new UsuarioDTO();
-
-            $usuarioDTO->id = $id;
-            $usuarioDTO->nome = $corpo['nome'] ?? null;
-            $usuarioDTO->email = $corpo['email'] ?? null;
-
-            $usuarioController = new UsuarioController();
-
-            $usuarioController->editar($usuarioDTO);
-
-            responder([
-                'sucesso' => true,
-                'mensagem' => 'Usuário atualizado com sucesso.'
-            ]);
-
-            break;
-        /*
-        |--------------------------------------------------------------------------
-        | LOGOUT
-        |--------------------------------------------------------------------------
-        */
+      
         case 'sair':
 
             $_SESSION = [];
@@ -321,11 +239,7 @@ try {
             break;
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | AÇÃO INVÁLIDA
-        |--------------------------------------------------------------------------
-        */
+    
         default:
 
             responder([
@@ -350,7 +264,7 @@ try {
 
 } catch (Throwable $erro) {
 
-    // Não expor detalhes internos do servidor para o navegador.
+  
     error_log($erro->getMessage());
 
     responder([
