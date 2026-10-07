@@ -3,38 +3,40 @@
 require_once dirname(__DIR__) . '/dtos/UsuarioDTO.php';
 require_once dirname(__DIR__) . '/controllers/UsuarioController.php';
 
-header('Content-Type: application/json; charset=utf-8');
+$acao = $_GET['acao'] ?? '';
 
-$controller = new UsuarioController();
+switch ($acao) {
 
-try {
-    switch ($_SERVER['REQUEST_METHOD']) {
-        case 'GET':
-            echo json_encode(['sucesso' => true, 'dados' => $controller->listar()]);
-            break;
+    case 'salvar':
+        $usuarioDTO = new UsuarioDTO();
+        $usuarioDTO->nome = $_POST['nome'];
+        $usuarioDTO->email = $_POST['email'];
+        $usuarioDTO->senha = $_POST['senha'];
 
-        case 'POST':
-            $corpo = json_decode(file_get_contents('php://input'), true) ?? [];
+        $usuarioController = new UsuarioController();
+        try {
+            $usuarioController->salvar($usuarioDTO);
+            header("Location: login.html");
+        } catch (PDOException $erro) {
+            echo "Erro na base de dados" . $erro->getMessage();
+        } catch (Exception $erro) {
+            echo "Erro inesperado" . $erro->getMessage();
+        }
+        break;
 
-            $dto = new UsuarioDTO();
-            $dto->nome  = $corpo['nome'] ?? null;
-            $dto->email = $corpo['email'] ?? null;
-            $dto->senha = $corpo['senha'] ?? null;
+    case 'autenticar':
+        $usuarioDTO = new UsuarioDTO();
+        $usuarioDTO->email = $_POST['email'];
+        $usuarioDTO->senha = $_POST['senha'];
 
-            $id = $controller->salvar($dto);
-
-            http_response_code(201);
-            echo json_encode(['sucesso' => true, 'id' => $id]);
-            break;
-
-        default:
-            http_response_code(405);
-            echo json_encode(['sucesso' => false, 'erro' => 'Método não permitido.']);
-    }
-} catch (InvalidArgumentException $e) {
-    http_response_code(400);
-    echo json_encode(['sucesso' => false, 'erro' => $e->getMessage()]);
-} catch (Throwable $e) {
-    http_response_code(500);
-    echo json_encode(['sucesso' => false, 'erro' => 'Erro interno no servidor.']);
+        $usuarioController = new UsuarioController();
+        try {
+            $usuario = $usuarioController->autenticar($usuarioDTO);
+            session_start();
+            $_SESSION['usuario'] = $usuario->getNome();
+            header("Location: home.php");
+        } catch (Throwable $erro) {
+            echo "Erro: " . $erro->getMessage();
+        }
+        break;
 }

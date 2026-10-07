@@ -2,50 +2,40 @@
 
 require_once dirname(__DIR__) . '/models/Usuario.php';
 
-class UsuarioDAO
-{
-    public function salvar(Usuario $usuario, PDO $conn): int
-    {
-        $sql = 'INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)';
+class UsuarioDAO {
+
+    public function salvar($usuario, $conn) {
+        $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $usuario->getNome());
         $stmt->bindValue(2, $usuario->getEmail());
-        $stmt->bindValue(3, $usuario->getSenha());
-        $stmt->bindValue(4, $usuario->getPerfil());
+        $stmt->bindValue(3, password_hash($usuario->getSenha(), PASSWORD_DEFAULT));
         $stmt->execute();
-
-        return (int) $conn->lastInsertId();
     }
 
-    public function buscarPeloEmail(string $email, PDO $conn): ?Usuario
-    {
-        $stmt = $conn->prepare('SELECT * FROM usuarios WHERE email = ?');
-        $stmt->bindValue(1, $email);
+    public function buscarPeloEmail($usuario, $conn) {
+        $sql = "SELECT * FROM usuarios WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $usuario->getEmail());
         $stmt->execute();
+        $usuarioBase = $stmt->fetch(PDO::FETCH_OBJ);
 
-        $linha = $stmt->fetch();
-
-        return $linha ? $this->paraModelo($linha) : null;
+        if ($usuarioBase) {
+            // converter o objeto do banco para o modelo
+            $usuarioModelo = new Usuario();
+            $usuarioModelo->setId($usuarioBase->id);
+            $usuarioModelo->setNome($usuarioBase->nome);
+            $usuarioModelo->setEmail($usuarioBase->email);
+            $usuarioModelo->setSenha($usuarioBase->senha);
+            return $usuarioModelo;
+        } else {
+            return null;
+        }
     }
 
-    public function listar(PDO $conn): array
-    {
-        $stmt = $conn->query('SELECT * FROM usuarios ORDER BY id DESC');
-
-        return array_map([$this, 'paraModelo'], $stmt->fetchAll());
-    }
-
-    private function paraModelo(array $linha): Usuario
-    {
-        $usuario = new Usuario();
-        $usuario->setId((int) $linha['id']);
-        $usuario->setNome($linha['nome']);
-        $usuario->setEmail($linha['email']);
-        $usuario->setSenha($linha['senha']);
-        $usuario->setPerfil($linha['perfil']);
-        $usuario->setAtivo((bool) $linha['ativo']);
-        $usuario->setCriadoEm($linha['criado_em']);
-
-        return $usuario;
+    public function listar($conn) {
+        $sql = "SELECT id, nome, email FROM usuarios";
+        $stmt = $conn->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -4,49 +4,30 @@ require_once dirname(__DIR__) . '/dtos/UsuarioDTO.php';
 require_once dirname(__DIR__) . '/models/Usuario.php';
 require_once dirname(__DIR__) . '/services/UsuarioService.php';
 
-class UsuarioController
-{
-    private UsuarioService $service;
+class UsuarioController {
 
-    public function __construct()
-    {
-        $this->service = new UsuarioService();
-    }
-
-    public function salvar(UsuarioDTO $dto): int
-    {
+    public function salvar($usuarioDTO) {
+        // converter DTO para modelo
         $usuario = new Usuario();
-        $usuario->setNome($dto->nome);
-        $usuario->setEmail($dto->email);
-        $usuario->setSenha($dto->senha);
+        $usuario->setNome($usuarioDTO->nome);
+        $usuario->setEmail($usuarioDTO->email);
+        $usuario->setSenha($usuarioDTO->senha);
 
-        return $this->service->salvar($usuario);
+        $usuarioService = new UsuarioService();
+        $usuarioService->salvar($usuario);
     }
 
-    public function autenticar(UsuarioDTO $dto): array
-    {
+    public function autenticar($usuarioDTO) {
         $usuario = new Usuario();
-        $usuario->setEmail($dto->email);
-        $usuario->setSenha($dto->senha);
+        $usuario->setEmail($usuarioDTO->email);
+        $usuario->setSenha($usuarioDTO->senha);
 
-        return $this->paraArray($this->service->autenticar($usuario));
+        $usuarioService = new UsuarioService();
+        return $usuarioService->autenticar($usuario);
     }
 
-    public function listar(): array
-    {
-        return array_map([$this, 'paraArray'], $this->service->listar());
-    }
-
-    // Nunca devolve a senha (nem o hash) para o frontend
-    private function paraArray(Usuario $u): array
-    {
-        return [
-            'id'        => $u->getId(),
-            'nome'      => $u->getNome(),
-            'email'     => $u->getEmail(),
-            'perfil'    => $u->getPerfil(),
-            'ativo'     => $u->getAtivo(),
-            'criado_em' => $u->getCriadoEm(),
-        ];
+    public function listar() {
+        $usuarioService = new UsuarioService();
+        return $usuarioService->listar();
     }
 }
